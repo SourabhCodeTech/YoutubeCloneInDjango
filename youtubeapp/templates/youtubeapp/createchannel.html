@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+    {% load static %}
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">    
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+    <title>CREATE CHANEL</title>
+  </head>
+  <body>
+      {% include 'youtubeapp/navbar.html' %}
+    <h1  class="text-center text-primary">CREATE CHANNEL </h1>
+    <h1 id="yt" class="text-primary text-center"></h1>
+    <form class="container" action="{% url 'create_channel' %}" method="POST">
+      {% csrf_token %}
+  <div class="mb-3">
+    <label for="exampleInputEmail1" class="form-label">Channel Name</label>
+    <input type="text"  class="form-control" id="channelname" aria-describedby="emailHelp">
+
+  </div>
+  <div class="mb-3">
+    <label for="exampleInputPassword1" class="form-label">Channel Image</label>
+    <input type="file" class="form-control" id="file">
+  </div>
+  <button type="submit" class="btn btn-primary">Create</button>
+</form>
+    <script>
+      const form = document.querySelector("form");
+      form.addEventListener('submit',(e) =>{
+        e.preventDefault()
+        const newform = new FormData()
+        const file = document.getElementById("file").files[0];
+        const channelname = document.getElementById("channelname").value;
+        const csrf = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+        newform.append('csrfmiddlewaretoken',csrf)
+        newform.append('file',file)
+        newform.append('channelname',channelname)
+        fetch('{% url "create_channel" %}',{
+          method:'POST',
+          body:newform
+
+        }).then(data => data.json()).then(txt =>{
+          const yt = document.getElementById("yt");
+          yt.innerHTML = "NOW YOU ARE A YOUTHOOBER"
+          window.location.href = `http://127.0.0.1:8000/${txt.link}`
+        
+      })
+    })
+    </script>
+  </body>
+</html>

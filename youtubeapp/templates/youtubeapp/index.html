@@ -1,0 +1,21 @@
+{% extends 'youtubeapp/base.html' %}
+{% block title %}Youtube Clone{% endblock title %}
+{% block body %}
+{% load static %}
+<div class="row">
+  {% for i in video %}
+      <div class="col-sm">
+        <a href="{% url 'video' i.id %}">
+          <img
+            src="{% static 'images/img.jpg' %}"
+            class="mx-2"
+            alt="Channel Image"
+            width="100"
+          />
+          <h3>{{i.video_title}}</h3>
+        </a>
+      </div>
+      {% endfor %}
+     
+    </div>
+  {% endblock body %}
